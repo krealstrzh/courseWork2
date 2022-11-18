@@ -1,5 +1,7 @@
 package pro.sky.coursework2.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,24 +14,26 @@ import java.util.Collection;
 @RequestMapping("/java")
 public class JavaQuestionController {
 
-    public final QuestionService questionService;
+    @Qualifier ("javaQuestionRepository")
+    public final QuestionRepository javaQuestionRepository;
 
-    public JavaQuestionController(QuestionService questionService) {
-        this.questionService = questionService;
+    @Autowired
+    public JavaQuestionController(QuestionRepository javaQuestionRepository) {
+        this.javaQuestionRepository = javaQuestionRepository;
     }
 
     @GetMapping("/add")
-    public Question add(@RequestParam String question, @RequestParam String answer) {
-        return questionService.add(question, answer);
+    public String add(@RequestParam String question, @RequestParam String answer) {
+        return javaQuestionRepository.add(question, answer);
     }
 
     @GetMapping ("/remove")
-    public Question removeQuestion(@RequestParam String question, @RequestParam String answer) {
-        return questionService.remove(question, answer);
+    public String removeQuestion(@RequestParam String question, @RequestParam String answer) {
+        return javaQuestionRepository.remove(question, answer);
     }
 
     @GetMapping
     public Collection<Question> getAll() {
-        return questionService.findAll();
+        return javaQuestionRepository.findAll();
     }
 }
